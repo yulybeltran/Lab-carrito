@@ -8,11 +8,16 @@ let totalAcumulado = 0;
 // ── Selección de elementos del DOM ──
 const listaCarrito = document.querySelector('#lista-carrito');
 const spanTotal    = document.querySelector('#total');
-const badge        = document.querySelector('#badge');
+const badge        = document.querySelector('#badge'); // contador carriro
 const btnVaciar    = document.querySelector('#btn-vaciar');
 const msgVacio     = document.querySelector('#msg-vacio');
 
-
+function formatPrecio(valor) {
+  return '$ ' + valor.toLocaleString('es-CO', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  });
+}
 
 // ── Actualizar badge del navbar ──
 function updateBadge() {
@@ -23,9 +28,7 @@ function updateBadge() {
 
 // ── Actualizar total ──
 function updateTotal() {
-  spanTotal.textContent = '$' + totalAcumulado.toLocaleString('es-CO', {
-    minimumFractionDigits: 2
-  });
+ spanTotal.textContent = formatPrecio(totalAcumulado);
 }
 
 // ── Controlar mensaje vacío ──
@@ -50,8 +53,7 @@ function recalcularTotales() {
 function updateSubtotalLi(key) {
   const item = carrito[key];
   const subtotal = item.precio * item.cantidad;
-  item.li.querySelector('.cart-item-price').textContent =
-    '$' + subtotal.toLocaleString('es-CO', { minimumFractionDigits: 2 });
+  item.li.querySelector('.cart-item-price').textContent = formatPrecio(subtotal);
   item.li.querySelector('.cart-item-qty').textContent = item.cantidad;
 }
 
@@ -76,9 +78,7 @@ function crearItemLi(key, nombre, precio, imagen) {
 
   const precioEl = document.createElement('span');
   precioEl.classList.add('cart-item-price');
-  precioEl.textContent = '$' + parseFloat(precio).toLocaleString('es-CO', {
-    minimumFractionDigits: 2
-  });
+  precioEl.textContent = formatPrecio(parseFloat(precio));
 
   info.appendChild(nombreEl);
   info.appendChild(precioEl);
